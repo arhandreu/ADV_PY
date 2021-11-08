@@ -13,7 +13,7 @@ class TestYandex:
 
     @classmethod
     def setup_class(cls):
-        cls.token = 'AQAAAAA2H9_LAADLW-43ftNJPECCivb_MLCw-pk'
+        cls.token = ''
         cls.url = 'https://cloud-api.yandex.net:443/'
         cls.headers = {
             'accept': 'application/json',
