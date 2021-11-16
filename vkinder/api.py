@@ -5,27 +5,27 @@ vkuser = vk_api.VkApi(token='34cafda6f88390287a8e2f600dc44a44d406e6006cdf0b24246
 
 
 class Client:
-    def __init__(self, user_id):
-        self.user_id = user_id
-        self.data_user = self.get_data_user()
-        self.data_person = self.search_person()
+    def __init__(self, client_id):
+        self.client_id = client_id
+        self.data_client = self.get_data_client()
+        self.data_person = []
+        self.now_person = None
 
-    def get_data_user(self):
+    def get_data_client(self):
         fields = f'bdate, city, sex, relation'
-        all_data_user = vkuser.method('users.get', {'user_ids': self.user_id, 'fields': fields})
+        all_data_user = vkuser.method('users.get', {'user_ids': self.client_id, 'fields': fields})
         return {i: all_data_user[0].get(i) for i in fields.split(', ')}
 
     def search_person(self):
-        return ([idp['id'] for idp in vkuser.method('users.search', {'bdate': self.data_user['bdate'],
-                                              'city': self.data_user['city'],
-                                              'sex': self.data_user['sex'],
-                                              'relation': self.data_user['relation']
-                                              })['items']])
-
-    def change_data_user(self):
-        for key, value in self.data_user.items():
-            if not value:
-                self.data_user[key] = 1
+        if self.data_client['city']:
+            city = self.data_client['city']['id']
+        else:
+            city = None
+        return ([idp['id'] for idp in vkuser.method('users.search', {'birth_year': self.data_client['bdate'],
+                                                                     'city': city,
+                                                                     'sex': self.data_client['sex'],
+                                                                     'relation': self.data_client['relation']
+                                                                     })['items']])
 
     def send_person(self):
         for _ in self.data_person:
@@ -40,8 +40,14 @@ class Client:
         all_photo = vkuser.method('photos.get', {'owner_id': id, 'album_id': 'profile', 'extended': 1})
         return [photo['id'] for photo in sorted(all_photo['items'], key=lambda photo: int(photo['likes']['count']) + (photo['comments']['count']))[:3]]
 
+    # def change_data_client():
+
 
 if __name__ == '__main__':
-    user = Client(359223119)
-    print(user.data_user)
-    print(user.data_person)
+    user = Client(12345678)
+    print(user.data_client)
+    # user.search_person()
+    # print(user.data_person)
+
+
+
