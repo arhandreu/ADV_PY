@@ -45,6 +45,15 @@ class Photo(Base):
 
 
 if __name__ == '__main__':
+
+    date_ar1 = {
+        4859955: [5464, 6546, 64846
+
+        ],
+        59898545: [4564, 6468, 168464
+
+        ]
+    }
     session = Session()
     # Base.metadata.drop_all(engine)
     Base.metadata.create_all(engine)
